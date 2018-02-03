@@ -122,10 +122,7 @@ class ManagerTest(OwnershipTestCommon):
             }), allocation)
 
     def test_get_open_claims(self):
-        claims = self.manager.get_open_claims(
-            self.map_allocation({
-                1: self.clients[0],
-            }))
+        claims = self.manager.get_open_claims([self.resources[1]])
 
         self.assertEqual([
             (self.clients[1], [self.resources[2]]),

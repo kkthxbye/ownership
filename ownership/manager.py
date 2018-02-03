@@ -40,7 +40,7 @@ class Manager:
         """
         new_allocation = {}
         for _ in self.get_claimed_resources():
-            claims = self.get_open_claims(new_allocation)
+            claims = self.get_open_claims(new_allocation.keys())
 
             served_resource, served_client = Uniform(
                 claims, new_allocation).pick_pair()
@@ -64,12 +64,12 @@ class Manager:
 
         return self.allocation
 
-    def get_open_claims(self, new_allocation) -> [Client, [Resource]]:
-        """Get list of not yet allocated claims
+    def get_open_claims(self, excluded_resources) -> [Client, [Resource]]:
+        """Get current claims without "excluded_resources"
         """
         claims = ((client, [
             resource for resource in client.claimed
-            if resource not in new_allocation.keys()
+            if resource not in excluded_resources
         ]) for client in self.clients)
 
         return [(client, resources) for client, resources in claims

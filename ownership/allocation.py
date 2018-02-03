@@ -27,7 +27,7 @@ class AllocationStrategy(ABC):
     def pick_pair(self) -> (Resource, Client):
         """Given present state pick resource-client pair
         """
-        pass
+        return
 
     @classmethod
     def priority_claims(cls, claims) -> [(Client, [Resource])]:

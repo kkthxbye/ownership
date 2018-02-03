@@ -30,17 +30,17 @@ class AllocationStrategy(ABC):
         pass
 
     @classmethod
-    def priority_claims(cls, claims) -> [Client, [Resource]]:
-        """Get current priority claims
+    def priority_claims(cls, claims) -> [(Client, [Resource])]:
+        """Get current priority claims.
+        First bother about the important guys.
+        If there are no important guys - get LOWPRIO
         """
-        # First bother about the important guys
         priority_claims = [(client, resources) for client, resources in claims
                            if client.priority != Client.PRIORITY_LOW]
 
-        # If there are no important guys - promote LOWPRIO
         return priority_claims if priority_claims else claims
 
-    def get_allocation_by_client(self) -> [Client, [Resource]]:
+    def get_allocation_by_client(self) -> [(Client, [Resource])]:
         """Get current allocation grouped by client
         """
         allocation = {}

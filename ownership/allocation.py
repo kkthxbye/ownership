@@ -32,8 +32,7 @@ class AllocationStrategy(ABC):
     @classmethod
     def priority_claims(cls, claims) -> [(Client, [Resource])]:
         """Get current priority claims.
-        First bother about the important guys.
-        If there are no important guys - get LOWPRIO
+        Filters out LOWPRIO clients until they're the only ones left.
         """
         priority_claims = [(client, resources) for client, resources in claims
                            if client.priority != Client.PRIORITY_LOW]

@@ -68,10 +68,9 @@ class Uniform(AllocationStrategy):
     """
 
     def deprived_claims(self, claims) -> [(Client, [Resource])]:
-        """Get claims excluding those who reached their current max
-        TODO descr
-            # Not having any claims at this point means
-            # they are all equally deprived
+        """Get claims of clients in need of resources.
+        Filters out those who reached current allocaton limit
+        and resets to default if resources allocation is uniform.
         """
         allocation_by_client = self.get_allocation_by_client()
         max_allocation_count = max(

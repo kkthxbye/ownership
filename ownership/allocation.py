@@ -67,11 +67,11 @@ class Uniform(AllocationStrategy):
     """Aims towards uniform distribution of resources across clients.
     """
 
-    def default_claims_queue(self) -> [Client, [Resource]]:
-        return self.deprived_claims(self.priority_claims(self.claims))
-
-    def deprived_claims(self, claims) -> [Client, [Resource]]:
+    def deprived_claims(self, claims) -> [(Client, [Resource])]:
         """Get claims excluding those who reached their current max
+        TODO descr
+            # Not having any claims at this point means
+            # they are all equally deprived
         """
         allocation_by_client = self.get_allocation_by_client()
         max_allocation_count = max(
@@ -82,22 +82,21 @@ class Uniform(AllocationStrategy):
             if len(allocation_by_client.get(client, [])) < max_allocation_count
         ]
 
-        # Not having any claims at this point means
-        # they are all equally deprived
         return deprived_claims if deprived_claims else claims
 
-    def pick_pair(self):
-        claims = self.default_claims_queue()
-        # Claimed resources ordered by the least amount of claims
-        uniform_queue = [(resource, [
-            client for client, claimed_resources in claims
+    def get_queue(self) -> [(Resource, [Client])]:
+        """ TODO descr
+        """
+        actual_claims = self.deprived_claims(self.priority_claims(self.claims))
+
+        queue = [(resource, [
+            client for client, claimed_resources in actual_claims
             if resource in claimed_resources
         ]) for resource in self.get_least_claimed_resources_queue()]
 
-        # Filter out resources we cannot allocate yet.
-        uniform_queue = [(resource, clients)
-                         for resource, clients in uniform_queue
-                         if len(clients)]
+        return [(resource, clients) for resource, clients in queue
+                if len(clients)]
 
-        resource, clients = uniform_queue[0]
+    def pick_pair(self):
+        resource, clients = self.get_queue()[0]
         return resource, clients[0]

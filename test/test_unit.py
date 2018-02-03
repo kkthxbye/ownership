@@ -69,9 +69,9 @@ class UniformAllocationTest(OwnershipTestCommon):
         ], self.uniform.deprived_claims(self.claims))
 
     def test_default_claims_queue(self):
-        self.assertEqual([
-            self.make_claim(self.clients[1], [2]),
-        ], self.uniform.default_claims_queue())
+        self.assertEqual([(self.resources[2], [
+            self.clients[1],
+        ])], self.uniform.get_queue())
 
     def test_pick_pair(self):
         resource, client = self.uniform.pick_pair()

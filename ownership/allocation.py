@@ -84,7 +84,8 @@ class Uniform(AllocationStrategy):
         return deprived_claims if deprived_claims else claims
 
     def get_queue(self) -> [(Resource, [Client])]:
-        """ TODO descr
+        """Get current claims queue
+        ordered by descending allocation preferability.
         """
         actual_claims = self.deprived_claims(self.priority_claims(self.claims))
 

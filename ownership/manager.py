@@ -32,7 +32,7 @@ class Manager:
     def revoke(self, client: Client) -> {Resource: Client}:
         """Revoke client's claims reallocating resources accordingly
         """
-        self.clients = [x for x in self.clients if x != client]
+        self.clients.remove(client)
         return self.allocate()
 
     def allocate(self) -> {Client: [Resource]}:

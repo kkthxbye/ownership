@@ -16,6 +16,7 @@ class Manager:
         clients: [Client] current clients
 
         allocation: {Client: Resource} current client-resource assignations
+        strategy: AllocationStrategy strategy to be used for allocation
     """
 
     def __init__(self):
@@ -43,6 +44,7 @@ class Manager:
             claims = self.get_open_claims(new_allocation.keys())
 
             served_resource, served_client = Uniform(
+            served_resource, served_client = self.strategy(
                 claims, new_allocation).pick_pair()
 
             new_allocation[served_resource] = served_client

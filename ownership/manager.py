@@ -11,11 +11,12 @@ class Manager:
 
     Attributes:
 
-        resources: [Resource] initialized resources
+        resources: list[Resource] initialized resources
 
-        clients: [Client] current clients
+        clients: list[Client] current clients
 
-        allocation: {Client: Resource} current client-resource assignations
+        allocation: dict[Client, Resource] current client-resource assignations
+
         strategy: AllocationStrategy strategy to be used for allocation
     """
 
@@ -23,6 +24,7 @@ class Manager:
         self.resources = []
         self.clients = []
         self.allocation = {}
+        self.strategy = Uniform
 
     def add(self, client: Client) -> {Resource: Client}:
         """Add client reallocating resources accordingly
@@ -43,7 +45,6 @@ class Manager:
         for _ in self.get_claimed_resources():
             claims = self.get_open_claims(new_allocation.keys())
 
-            served_resource, served_client = Uniform(
             served_resource, served_client = self.strategy(
                 claims, new_allocation).pick_pair()
 

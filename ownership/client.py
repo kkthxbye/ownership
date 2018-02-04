@@ -4,7 +4,7 @@ class Client:
     Attributes:
         _id: int
 
-        claimed: [Resource]
+        claimed: list[Resource]
 
         priority: int Is set to PRIORITY_NORMAL by default
     """

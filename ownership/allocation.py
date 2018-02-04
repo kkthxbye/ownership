@@ -13,9 +13,9 @@ class AllocationStrategy(ABC):
 
     Attributes:
 
-        claims: [Client, [Resource]] currently open claims
+        claims: list[(Client, list[Resource])] currently open claims
 
-        allocation: {Resource, Client}
+        allocation: dict[Resource, Client]
 
     """
 

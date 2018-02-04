@@ -86,10 +86,10 @@ class Uniform(AllocationStrategy):
         """Get current claims queue ordered
         by descending allocation preferability.
         """
-        actual_claims = self.deprived_claims(self.priority_claims(self.claims))
+        claims = self.deprived_claims(self.priority_claims(self.claims))
 
         queue = [(resource, [
-            client for client, claimed_resources in actual_claims
+            client for client, claimed_resources in claims
             if resource in claimed_resources
         ]) for resource in self.get_least_claimed_resources_queue()]
 

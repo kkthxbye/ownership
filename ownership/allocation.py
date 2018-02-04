@@ -25,7 +25,7 @@ class AllocationStrategy(ABC):
 
     @abstractmethod
     def pick_pair(self) -> (Resource, Client):
-        """Given present state pick resource-client pair
+        """Given present state, pick resource-client pair
         """
         return
 
@@ -68,7 +68,7 @@ class Uniform(AllocationStrategy):
 
     def deprived_claims(self, claims) -> [(Client, [Resource])]:
         """Get claims of clients in need of resources.
-        Filters out those who reached current allocaton limit
+        Filters out those who reached current allocaton limit,
         and resets to default if resources allocation is uniform.
         """
         allocation_by_client = self.get_allocation_by_client()
@@ -83,8 +83,8 @@ class Uniform(AllocationStrategy):
         return deprived_claims if deprived_claims else claims
 
     def get_queue(self) -> [(Resource, [Client])]:
-        """Get current claims queue
-        ordered by descending allocation preferability.
+        """Get current claims queue ordered
+        by descending allocation preferability.
         """
         actual_claims = self.deprived_claims(self.priority_claims(self.claims))
 

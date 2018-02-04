@@ -2,7 +2,7 @@ class Client:
     """Subject. Claims objects.
 
     Attributes:
-        id: int
+        _id: int
 
         claimed: [Resource]
 

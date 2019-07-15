@@ -1,8 +1,9 @@
 class Resource:
-    """ Object. Is to be assigned to subject.
+    """Object. Is to be assigned to subject.
 
     Attributes:
         _id: int
+
     """
 
     def __init__(self, _id):

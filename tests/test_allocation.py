@@ -1,7 +1,9 @@
 import unittest
-from ownership.client import Client
+
 from ownership.allocation import Uniform
-from .common import OwnershipTestCommon
+from ownership.client import Client
+
+from test.common import OwnershipTestCommon
 
 
 class UniformAllocationTest(OwnershipTestCommon):

@@ -1,6 +1,4 @@
 import unittest
-from ownership.manager import Manager
-from ownership.resource import Resource
 from ownership.client import Client
 from .common import OwnershipTestCommon
 

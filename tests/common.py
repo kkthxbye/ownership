@@ -1,7 +1,8 @@
 import unittest
+
+from ownership.client import Client
 from ownership.manager import Manager
 from ownership.resource import Resource
-from ownership.client import Client
 
 
 class OwnershipTestCommon(unittest.TestCase):

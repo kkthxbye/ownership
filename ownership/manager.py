@@ -1,46 +1,40 @@
-"""Resource allocation manager
-"""
-from .client import Client
-from .resource import Resource
-from .allocation import Uniform
+from typing import Dict, List, Set
+
+from ownership.allocation import Uniform
+from ownership.client import Client
+from ownership.resource import Resource
 
 
 class Manager:
     """
-    Manages "resource: client" assignation
+    Manages "resource: client" assignation.
 
     Attributes:
-
-        resources: list[Resource] initialized resources
-
-        clients: list[Client] current clients
-
-        allocation: dict[Client, Resource] current client-resource assignations
-
+        resources: List[Resource] initialized resources
+        clients: List[Client] current clients
+        allocation: Dict[Client, Resource] current client-resource assignations
         strategy: AllocationStrategy strategy to be used for allocation
+
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.resources = []
         self.clients = []
         self.allocation = {}
         self.strategy = Uniform
 
-    def add(self, client: Client) -> {Resource: Client}:
-        """Add client reallocating resources accordingly
-        """
+    def add(self, client: Client) -> Dict[Resource, Client]:
+        """Add client reallocating resources accordingly."""
         self.clients.append(client)
         return self.allocate()
 
-    def revoke(self, client: Client) -> {Resource: Client}:
-        """Revoke client's claims reallocating resources accordingly
-        """
+    def revoke(self, client: Client) -> Dict[Resource, Client]:
+        """Revoke client's claims reallocating resources accordingly."""
         self.clients.remove(client)
         return self.allocate()
 
-    def allocate(self) -> {Client: [Resource]}:
-        """Perform allocation based on selected strategy
-        """
+    def allocate(self) -> Dict[Client, List[Resource]]:
+        """Perform allocation based on selected strategy."""
         new_allocation = {}
         for _ in self.get_claimed_resources():
             claims = self.get_open_claims(new_allocation.keys())
@@ -52,12 +46,11 @@ class Manager:
 
         return self.reassign(new_allocation)
 
-    def reassign(self, new_allocation) -> {Resource: Client}:
-        """Perform mutable reassignation on existing allocation
-        """
+    def reassign(self, new_allocation) -> Dict[Resource, Client]:
+        """Perform mutable reassignation on existing allocation."""
         diff = (k for k in set(
             list(self.allocation.keys()) + list(new_allocation.keys()))
-                if self.allocation.get(k) != new_allocation.get(k))
+            if self.allocation.get(k) != new_allocation.get(k))
 
         for resource in diff:
             if resource in self.allocation:
@@ -67,9 +60,8 @@ class Manager:
 
         return self.allocation
 
-    def get_open_claims(self, excluded_resources) -> [Client, [Resource]]:
-        """Get current claims without "excluded_resources"
-        """
+    def get_open_claims(self, excluded_resources) -> List[Client, List[Resource]]:
+        """Get current claims without "excluded_resources"."""
         claims = ((client, [
             resource for resource in client.claimed
             if resource not in excluded_resources
@@ -78,8 +70,7 @@ class Manager:
         return [(client, resources) for client, resources in claims
                 if len(resources)]
 
-    def get_claimed_resources(self) -> set([Resource]):
-        """Get resources claimed by current clients
-        """
+    def get_claimed_resources(self) -> Set[Resource]:
+        """Get resources claimed by current clients."""
         return set(
             resource for client in self.clients for resource in client.claimed)
